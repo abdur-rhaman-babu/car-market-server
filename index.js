@@ -51,6 +51,24 @@ async function run() {
         const result = await carCollection.findOne(query)
         res.send(result)
     })
+
+    // put car for update
+    app.put('/cars/:id', async (req, res)=>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)}
+        const options = {upsert: true}
+        const car = req.body;
+        const updateCar = {
+            $set:{
+                name: car.name,
+                price: car.price,
+                brand: car.brand,
+                photo: car.photo
+            }
+        }
+        const result = await carCollection.updateOne(query, updateCar, options)
+        res.send(result)
+    })
  
 }
 run().catch(console.dir);

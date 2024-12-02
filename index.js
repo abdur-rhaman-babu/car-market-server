@@ -22,14 +22,19 @@ async function run() {
   
     const carCollection = client.db("carsDB").collection("cars");
 
-    // create car
+    // create or post car on database
     app.post("/cars", async (req, res) => {
       const newCar = req.body;
       const result = await carCollection.insertOne(newCar);
       res.send(result);
     });
 
-    // 
+    // get or read car on the ui
+    app.get('/cars', async (req, res)=>{
+        const cursor = carCollection.find()
+        const result = await cursor.toArray() 
+        res.send(result)    
+    })
  
 }
 run().catch(console.dir);
